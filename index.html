@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css">
+        
+    </head>
+    <body>
+        
+            <div class="Heading">
+               <h1>Game room</h1> 
+               <p> Pick a game and start playing</p>
+            </div>
+            <!-- Games grids -->
+             <div class="games-grid">
+                <!-- Game 1, all the content between the a tags will be elemnt of game1-->
+                 <!-- put the icon link, the name of game, the description -->
+                <a href="sudoku.html" class="game-card">
+                    <div class="game-icon sudoku">
+                        <img src="css/Sudoku_icon.png" alt="Error image">
+                    </div>
+                    <span class="badge-puzzle"> Puzzle </span>
+                    <h2>Sudoku</h2>
+                    <p>Fill the 9x9 grid with numbers from 1 to 9, without repeating any number 
+                        in each row, column.
+
+                    </p>
+                    <button class="play-button">Play Now</button>
+
+                </a>
+                <!-- Need to repeat the same for other games -->
+                <a href="chess.html" class="game-card">
+                    <div class="game-icon chess">
+                        <img src="Chess_icon.png" alt="Error image">
+                    </div>
+                    <span class="badge-strategy"> Strategy </span>
+                    <h2>Chess</h2>
+                    <p>Classic strategy game. Play against a friend or AI</p>
+                    <button class="play-button">Play Now</button>
+                </a>
+                
+                <a href="tic-tac-toe.html" class="game-card">
+                    <div class="game-icon ttt">
+                        <img src="Tic-tac-toe_icon.png" alt="Error image">
+                    </div>
+                    <span class="badge-casual"> Casual </span>
+                    <h2>Tic-tac-toe</h2>
+                    <p>Simple and fast. First to get three in a row wins</p>
+                    <button class="play-button">Play Now</button>
+                </a>
+             </div>
+        
+          
+    </body>
+   
+</html>
