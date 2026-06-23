@@ -267,6 +267,9 @@ main {
 
 #reset-btn:active {
   transform: translateY(0);
+  color:#36c6ce;
+  box-shadow: 0 6px 14px rgba(122, 107, 255, 0.25);
+  background: linear-gradient(90deg, #36c6ce, #7a6bff);
 }
 
 @media (max-width: 480px) {
