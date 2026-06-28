@@ -272,6 +272,34 @@ main {
   background: linear-gradient(90deg, #36c6ce, #7a6bff);
 }
 
+/* Reset scores button */
+#score-reset-btn {
+  margin-top: 12px;
+  background: linear-gradient(90deg, #36c6ce, #7a6bff);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(54, 198,  206, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}   
+
+#score-reset-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(54, 198, 206, 0.45);
+}
+
+#score-reset-btn:active {
+  transform: translateY(0);
+  color:#ff6fb0;
+  box-shadow: 0 6px 14px rgba(54, 198, 206, 0.25);
+  background: linear-gradient(90deg, #ff6fb0, #7a6bff);
+}
+
+
 @media (max-width: 480px) {
   .h1 { font-size: 2rem; }
   .ttt-cell { font-size: 2.4rem; }

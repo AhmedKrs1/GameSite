@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cellEls = Array.from(boardEl.querySelectorAll(".ttt-cell"));
   const statusEl = document.getElementById("status");
   const resetBtn = document.getElementById("reset-btn");
+  const scoreResetBtn = document.getElementById("score-reset-btn");
 
   const scoreXEl = document.getElementById("score-x");
   const scoreDEl = document.getElementById("score-d");
@@ -193,11 +194,24 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   }
 
+  /** 
+   *  Resets the scores to zero and starts a new game.
+   */
+  function resetScores() {
+    scores = { X: 0, O: 0, draws: 0 };
+    renderScores();
+    newGame();
+  }
+   
+
   // ---- Wire up event listeners ----
   cellEls.forEach((cell) => {
     cell.addEventListener("click", handleCellClick);
   });
   resetBtn.addEventListener("click", newGame);
+  scoreResetBtn.addEventListener("click", resetScores);
+  
+
 
   // ---- Initial render on page load ----
   render();
