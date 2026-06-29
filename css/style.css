@@ -83,3 +83,17 @@ body {
 .badge.popular { background: #eeedfe; color: #3c3489; }
 .badge.quick   { background: #eaf3de; color: #3b6d11; }
 .badge.puzzle  { background: #faece7; color: #993c1d; }
+
+.login-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4f7cff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.login-button:hover {
+  background-color: #3a5dcc;
+} 
