@@ -93,7 +93,27 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.15s ease;
+  position: absolute;
+  top: 20px;
+  right: 140px;  
 }
 .login-button:hover {
+  background-color: #3a5dcc;
+} 
+
+.signup-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4f7cff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  position: absolute;
+  top: 20px;
+  right: 20px;  
+}
+.signup-button:hover {
   background-color: #3a5dcc;
 } 
