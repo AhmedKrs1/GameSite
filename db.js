@@ -1,3 +1,4 @@
+// Connect express.js to postgres database
 require('dotenv').config();
 const { Pool } = require('pg');
 
