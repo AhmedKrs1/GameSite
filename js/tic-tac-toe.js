@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function resetScores() {
     scores = { X: 0, O: 0, draws: 0 };
     renderScores();
-    //newGame();
+    newGame();
   }
    
 
