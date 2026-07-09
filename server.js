@@ -5,29 +5,33 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(express.json());
+app.use(express.static(__dirname));
 
 
 // Signup route
 app.post('/api/signup', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+    const email = req.body.email;
 
-    if( !username || !password ) {
-        return res.status(400).json({ message: 'Username and password are required' });
+    if( !username || !password || !email) {
+        return res.status(400).json({ message: 'Username, email and password are required' });
     }
     
     try {
         // Check if the username already exists
-        const userCheck = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+        const userCheck = await pool.query('SELECT * FROM users WHERE username = $1 OR email = $2', 
+            [username, email]);
         if (userCheck.rows.length > 0) {
-            return res.status(400).json({ message: 'Username already exists' });
+            return res.status(400).json({ message: 'Username or email already exists' });
         }
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert the new user into the database
-        await pool.query('INSERT INTO users (username, password_hash) VALUES ($1, $2)', [username, hashedPassword]);
+        await pool.query('INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3)', 
+            [username, email, hashedPassword]);
 
         res.status(201).json({ message: 'User created successfully' });
     } catch (err) {

@@ -1,3 +1,4 @@
+console.log('signup.js loaded');
 const form = document.querySelector('form');
 
 form.addEventListener('submit', async function(event){
@@ -6,6 +7,7 @@ form.addEventListener('submit', async function(event){
     const username = document.getElementById('exampleInputName1').value;
     const password = document.getElementById('InputPassword1').value;
     const confirmPassword = document.getElementById('InputPassword2').value;
+    const email = document.getElementById('Email').value;
 
     if (password !== confirmPassword) {
         alert('Passwords do not match!');
@@ -16,7 +18,7 @@ form.addEventListener('submit', async function(event){
         const response = await fetch('/api/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-             body: JSON.stringify({ username, password })
+             body: JSON.stringify({ username, password, email })
         });
         const data = await response.json();
         
