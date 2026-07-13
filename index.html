@@ -12,16 +12,18 @@
                <h1>Game room</h1> 
                <p> Pick a game and start playing</p>
             </div>
-            <!--- Log-in button-->
-            <a href="login.html">
-                <button class="login-button">Log In</button>
-            </a>
             
-            <!--- Sign-up button-->
-            <a href="signup.html">
-                <button class="signup-button">Sign Up</button>
-            </a>
-
+            <!-- Profile Menu -->
+            <div class="profile-menu">
+                <button class="profile-icon" id="profileIconBtn">
+                    <img src="css/user.png" alt="Profile">
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="login.html">Log In</a>
+                    <a href="signup.html">Sign Up</a>
+                </div>
+            </div>
+            <script src="js/index.js"></script>
             <!-- Games grids -->
              <div class="games-grid">
                 <!-- Game 1, all the content between the a tags will be elemnt of game1-->
