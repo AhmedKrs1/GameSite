@@ -4,14 +4,14 @@ const form = document.querySelector('form');
 form.addEventListener('submit', async function(event){
     event.preventDefault();
     
-    const username = document.getElementById('exampleInputName1').value;
+    const identifier = document.getElementById('InputEmail1').value;
     const password = document.getElementById('InputPassword1').value;
 
     try {
         const response = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ identifier, password })
         });
         const data = await response.json();
         
