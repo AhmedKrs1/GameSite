@@ -44,20 +44,20 @@ app.post('/api/signup', async (req, res) => {
 
 // Login route
 app.post('/api/login', async (req, res) => {
-  const username = req.body.username;
+  const identifier= req.body.identifier;
   const password = req.body.password;
 
   // Check if it's valid
-  if(!username || !password) {
-    return res.status(400).json({message: 'Username and password are required'});
+  if(!identifier || !password) {
+    return res.status(400).json({message: 'Identifier and password are required'});
   }
 
   try {
     // Find the user by name
-    const userCheck = await pool.query('Select * FROM users WHERE username = $1', [username]);
+    const userCheck = await pool.query('Select * FROM users WHERE username = $1 OR email = $2', [identifier, identifier]);
 
     if(userCheck.rows.length == 0) {
-        return res.status(400).json({message: 'Invalid username or password'});
+        return res.status(400).json({message: 'Invalid identifier or password'});
     }
 
     const user = userCheck.rows[0];
@@ -67,7 +67,7 @@ app.post('/api/login', async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
     
     if(!passwordMatch){
-        return res.status(400).json({message: 'Invalid username or password'});
+        return res.status(400).json({message: 'Invalid identifier or password'});
     }
 
     res.status(200).json({message: 'Login successful', user: {id: user.id, username: user.username} });
