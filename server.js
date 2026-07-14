@@ -17,7 +17,7 @@ app.use(session({
     cookie: { secure: false
        , maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
      } // Set to true if using HTTPS
-}));v
+}));
 
 // Signup route
 app.post('/api/signup', async (req, res) => {
