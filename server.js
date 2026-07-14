@@ -2,11 +2,22 @@
 const express = require('express');
 const pool = require('./db');
 const bcrypt = require('bcrypt');
+// Build express-session for session management
+const session = require('express-session');
 
 const app = express();
 app.use(express.json());
 app.use(express.static(__dirname));
 
+// Configure session middleware
+app.use(session({
+    secret: process.env.SESSION_SECRET, // Replace with a strong secret key
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false
+       , maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
+     } // Set to true if using HTTPS
+}));v
 
 // Signup route
 app.post('/api/signup', async (req, res) => {
@@ -17,7 +28,11 @@ app.post('/api/signup', async (req, res) => {
     if( !username || !password || !email) {
         return res.status(400).json({ message: 'Username, email and password are required' });
     }
-    
+    // Input validation (layer of security to prevent SQL injection and other attacks)
+    const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+    if (!usernameRegex.test(username)) {
+        return res.status(400).json({ message: 'Username can only contain letters, numbers, and underscores (3-20 characters)' });
+    }
     try {
         // Check if the username already exists
         const userCheck = await pool.query('SELECT * FROM users WHERE username = $1 OR email = $2', 
@@ -69,6 +84,9 @@ app.post('/api/login', async (req, res) => {
     if(!passwordMatch){
         return res.status(400).json({message: 'Invalid identifier or password'});
     }
+    // Set session data
+    req.session.userId = user.id;
+    req.session.username = user.username;
 
     res.status(200).json({message: 'Login successful', user: {id: user.id, username: user.username} });
 
@@ -78,6 +96,26 @@ app.post('/api/login', async (req, res) => {
     res.status(500).json({message: 'Server error'});
 
   }
+});
+
+// Verify if logged in
+app.get('/api/me', (req, res) => {
+    if(req.session.userId) {
+        res.status(200).json({loggedIn: true, user: {id: req.session.userId, username: req.session.username}});
+    } else {
+        res.status(200).json({loggedIn: false});
+    }
+});
+
+// Logout route
+app.post('/api/logout', (req, res) => {
+    req.session.destroy(err => {
+        if(err) {
+            return res.status(500).json({message: 'Logout failed'});
+        }
+        res.clearCookie('connect.sid'); // Clear the session cookie
+        res.status(200).json({message: 'Logout successful'});
+    });
 });
 
 // Start the server

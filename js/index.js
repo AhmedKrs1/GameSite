@@ -10,3 +10,30 @@ profileIconBtn.addEventListener('click', function (event) {
 document.addEventListener('click', function () {
   profileDropdown.classList.remove('show');
 });
+
+async function checkLoginStatus() {
+  try {
+    const response = await fetch('/api/me');
+    const data = await response.json();
+
+    if (data.loggedIn) {
+        // Safely display name in the dropdown (layer of security)
+        profileDropdown.innerHTML = `
+        <span class="dropdown-username" id="usernameDisplay"></span>
+        <a href="#" id="logoutLink">Log Out</a>
+      `;
+       document.getElementById('usernameDisplay').textContent = data.username;
+
+      document.getElementById('logoutLink').addEventListener('click', async function (event) {
+        event.preventDefault();
+        await fetch('/api/logout', { method: 'POST' });
+        window.location.reload();
+      });
+    } // If not logged in, show login and signup links, no change needed since they are already in the HTML
+  } catch (err) {
+    console.error('Error checking login status:', err);
+  }
+}
+
+// Call the function to check login status when the page loads
+checkLoginStatus();

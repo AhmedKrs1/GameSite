@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/AhmedKrs1/GameSite/issues"
   },
-  "homepage": "https://github.com/AhmedKrs1/GameSite#readme"
+  "homepage": "https://github.com/AhmedKrs1/GameSite#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "session": "^0.1.0"
+  }
 }

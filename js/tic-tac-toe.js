@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentPlayer = "X";         // whose turn it is
   let gameOver = false;            // true once someone has won or it's a draw
 
-  // Scores persist across "New Game" clicks (only reset on page reload)
+  // Scores persist across "continue" clicks 
   let scores = { X: 0, O: 0, draws: 0 };
 
   /**
