@@ -118,6 +118,31 @@ app.post('/api/logout', (req, res) => {
     });
 });
 
+// Record a game play
+app.post('/api/games/:gameName/played', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ error: 'Not logged in' });
+    }
+
+    const { gameName } = req.params;
+    const userId = req.session.userId;
+
+    try {
+        await pool.query(
+            `INSERT INTO game_stats (user_id, game_name, games_played)
+             VALUES ($1, $2, 1)
+             ON CONFLICT (user_id, game_name)
+             DO UPDATE SET games_played = game_stats.games_played + 1`,
+            [userId, gameName]
+        );
+
+        res.status(200).json({ message: 'Game recorded' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+});
+
 // Start the server
 app.listen(3000, () => {
   console.log('Server running on port 3000');
