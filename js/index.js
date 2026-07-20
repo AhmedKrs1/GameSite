@@ -19,11 +19,15 @@ async function checkLoginStatus() {
     if (data.loggedIn) {
         // Safely display name in the dropdown (layer of security)
         profileDropdown.innerHTML = `
-        <span class="dropdown-username" id="usernameDisplay"></span>
+        <span class="dropdown-username" id="usernameDisplay"> </span>
         <a href="#" id="logoutLink">Log Out</a>
+        <a href="profile.html" id="profileLink">Profile</a>
       `;
-       document.getElementById('usernameDisplay').textContent = data.username;
-
+       document.getElementById('usernameDisplay').textContent ="Your username: " + data.user.username;
+        document.getElementById('profileLink').addEventListener('click', function (event) {
+          event.preventDefault();
+          window.location.href = 'profile.html';
+        });
       document.getElementById('logoutLink').addEventListener('click', async function (event) {
         event.preventDefault();
         await fetch('/api/logout', { method: 'POST' });
