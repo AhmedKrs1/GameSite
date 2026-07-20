@@ -104,14 +104,14 @@ body {
 }
 
 #stats-list li {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
   align-items: center;
+  gap: 14px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 14px 18px;
-  font-size: 15px;
+  padding: 12px 18px;
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
@@ -120,11 +120,25 @@ body {
   transform: translateX(2px);
 }
 
-/* Empty state reads as its own quiet card, not an error */
-#stats-list li:only-child {
-  justify-content: center;
-  color: var(--text-muted);
-  font-style: italic;
+.rank {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: var(--teal);
+  text-align: center;
+}
+
+.game-name {
+  font-size: 15px;
+  text-transform: capitalize;
+}
+
+.game-score {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 6px 10px;
+  border-radius: 6px;
 }
 
 /* Focus visibility for keyboard nav (links, buttons if added later) */

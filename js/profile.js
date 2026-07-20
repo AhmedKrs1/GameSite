@@ -30,8 +30,16 @@ function renderStats(stats) {
     return;
   }
 
-  statsList.innerHTML = stats
-    .map(stat => `<li>${stat.game_name}: ${stat.games_played} games played</li>`)
+    const sorted = [...stats].sort((a, b) => b.games_played - a.games_played);
+
+    statsList.innerHTML = sorted
+        .map((stat, index) => `
+        <li>
+            <span class="rank">#${index + 1}</span>
+            <span class="game-name">${stat.game_name}</span>
+            <span class="game-score">${stat.games_played}</span>
+        </li>
+     `)
     .join('');
 }
 

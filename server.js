@@ -150,6 +150,34 @@ app.post('/api/games/:gameName/played', async (req, res) => {
     }
 });
 
+// Get game stats for the logged-in user
+app.get('/api/games/stats', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ error: 'Not logged in' });
+    }
+
+    const userId = req.session.userId;
+
+    try {
+        const result = await pool.query(
+            'SELECT game_name, games_played FROM game_stats WHERE user_id = $1',
+            [userId]
+        );
+
+        res.status(200).json({ stats: result.rows });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+});
+
+// Serve static files for the frontend
+app.use(express.static('public'));
+
+// Serve the main page
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+}); 
 // Start the server
 app.listen(3000, () => {
   console.log('Server running on port 3000');
