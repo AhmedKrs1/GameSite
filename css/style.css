@@ -178,7 +178,7 @@ body {
 }*/
 
 /* css/style.css */
-
+/* most variables are stored in theme.css to reuse*/
 body {
   display: flex;
   flex-direction: column;
@@ -291,7 +291,7 @@ body {
 .badge-casual   { background: var(--accent-soft); color: var(--accent); }
 .badge-puzzle   { background: rgba(224, 103, 75, 0.15); color: var(--coral); }
 
-/* ---- Profile menu ---- */
+
 .profile-menu {
   position: fixed;
   top: 20px;
