@@ -127,6 +127,13 @@ app.post('/api/games/:gameName/played', async (req, res) => {
     const { gameName } = req.params;
     const userId = req.session.userId;
 
+    // Validate game name (layer of security)
+    const validGames = ['tic-tac-toe', 'chess', 'sudoku'];
+
+    if (!validGames.includes(gameName)) {
+        return res.status(400).json({ error: 'Invalid game name' });
+    }
+
     try {
         await pool.query(
             `INSERT INTO game_stats (user_id, game_name, games_played)

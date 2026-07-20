@@ -136,6 +136,17 @@ document.addEventListener("DOMContentLoaded", () => {
     scoreOEl.textContent = scores.O;
     scoreDEl.textContent = scores.draws;
   }
+  // Record the number of game plays in the database
+  async function recordGamePlay(gameName) {
+    try {
+      const response = await fetch(`/api/games/${gameName}/played`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (err) {
+      console.error('Error recording game play:', err);
+    }
+  } 
 
   /**
    * Handles a click on a single cell.
@@ -161,6 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
       statusEl.textContent = `${result.winner} wins! 🎉`;
       scores[result.winner] += 1;
       renderScores();
+      recordGamePlay('tic-tac-toe'); // Record the game play in the database
       return;
     }
 
