@@ -1,4 +1,4 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
     font-family: Arial, sans-serif;
@@ -11,7 +11,7 @@ body {
     padding: 20px;
 }
 /*<!-- rem is a unit of measurement in CSS. The r stands for root  it's relative to the font size set on the html element--> 
-*/
+
 .Heading {
     text-align: center;
     margin-bottom: 3rem;
@@ -53,9 +53,9 @@ body {
     font-size: 32px;
 }
 .game-icon img {
-  width: 100%;         /* image fills the parent div */
+  width: 100%;          image fills the parent div 
   height: 100%;
-  object-fit: cover;   /* keeps proportions, no stretching */
+  object-fit: cover;    keeps proportions, no stretching 
 }
 .game-icon.chess   { background: #e6f1fb; }
 .game-icon.ttt    { background: #eaf3de; }
@@ -73,7 +73,7 @@ body {
   font-size: 14px; 
   cursor: pointer;
 }
-.play-btn:hover { background: #0ffca1; }
+.play-button:hover { background: #0ffca1; }
 
 .badge {
   font-size: 11px; 
@@ -175,4 +175,178 @@ body {
 .profile-dropdown a:hover {
   background-color: #f5f5f5;
 
+}*/
+
+/* css/style.css */
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.Heading {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.Heading h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--accent);
+  text-shadow: 0 0 14px var(--accent-soft);
+}
+.Heading p {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 1rem;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.game-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.game-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+.game-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.game-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.game-icon.chess  { background: rgba(0, 194, 168, 0.15); }
+.game-icon.ttt    { background: rgba(242, 183, 5, 0.15); }
+.game-icon.sudoku { background: rgba(224, 103, 75, 0.15); }
+
+.game-card h2 {
+  font-size: 17px;
+  font-weight: 500;
+}
+.game-card p {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.play-button {
+  margin-top: 0.5rem;
+  padding: 10px 0;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.play-button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1B1B2F;
+}
+
+.badge-puzzle,
+.badge-strategy,
+.badge-casual {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+.badge-strategy { background: var(--teal-soft); color: var(--teal); }
+.badge-casual   { background: var(--accent-soft); color: var(--accent); }
+.badge-puzzle   { background: rgba(224, 103, 75, 0.15); color: var(--coral); }
+
+/* ---- Profile menu ---- */
+.profile-menu {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+
+.profile-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background-color: var(--bg-card);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.profile-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.profile-icon:hover {
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.profile-dropdown {
+  display: none;
+  position: absolute;
+  top: 55px;
+  right: 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 140px;
+  overflow: hidden;
+}
+.profile-dropdown.show {
+  display: block;
+}
+.profile-dropdown a,
+.profile-dropdown .dropdown-username {
+  display: block;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+}
+.profile-dropdown a:hover {
+  background-color: var(--border);
+}
+.dropdown-username {
+  color: var(--text-muted);
+  border-bottom: 1px dashed var(--border);
 }
