@@ -17,6 +17,9 @@ async function checkLoginStatus() {
     const data = await response.json();
 
     if (data.loggedIn) {
+// User is logged in, update the profile icon and dropdown
+        profileIconBtn.classList.add('logged-in');
+
         // Safely display name in the dropdown (layer of security)
         profileDropdown.innerHTML = `
         <span class="dropdown-username" id="usernameDisplay"> </span>
@@ -33,7 +36,8 @@ async function checkLoginStatus() {
         await fetch('/api/logout', { method: 'POST' });
         window.location.reload();
       });
-    } // If not logged in, show login and signup links, no change needed since they are already in the HTML
+    } // If not logged in, show login and signup links, no change needed since they are already in the HTML\
+    else {profileIconBtn.classList.remove('logged-in');}
   } catch (err) {
     console.error('Error checking login status:', err);
   }
