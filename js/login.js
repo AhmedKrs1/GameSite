@@ -4,7 +4,7 @@ const form = document.querySelector('form');
 form.addEventListener('submit', async function(event){
     event.preventDefault();
     
-    const identifier = document.getElementById('InputEmail1').value;
+    const identifier = document.getElementById('loginIdentifier').value;
     const password = document.getElementById('InputPassword1').value;
 
     try {
