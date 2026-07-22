@@ -248,6 +248,9 @@ body {
 .game-icon.ttt    { background: rgba(242, 183, 5, 0.15); }
 .game-icon.sudoku { background: rgba(224, 103, 75, 0.15); }
 
+.game-icon.snake  { background: rgba(0, 194, 168, 0.15); font-size: 32px; }
+.game-icon.memory { background: rgba(224, 103, 75, 0.15); font-size: 32px; }
+
 .game-card h2 {
   font-size: 17px;
   font-weight: 500;
