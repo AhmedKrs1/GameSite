@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
           flipped = [];
           boardLocked = false;
           render();
+        
         }, 800);
       }
     }
@@ -89,20 +90,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Reset the game
     function newGame() {
-    cards = createShuffledCards();
-    flipped = [];
-    matched = [];
-    moves = 0;
-    boardLocked = false;
+         cards = createShuffledCards();
+         flipped = [];
+         matched = [];
+         moves = 0;
+         boardLocked = false;
 
-    movesEl.textContent = 0;
-    pairsEl.textContent = "0 / 6";
-    statusEl.textContent = "Find all the pairs!";
+        movesEl.textContent = 0;
+        pairsEl.textContent = "0 / 6";
+        statusEl.textContent = "Find all the pairs!";
 
-    render();
-  }
+        render();
+        
+    
 
-  resetBtn.addEventListener("click", newGame);
+    }
+    resetBtn.addEventListener("click", newGame);
+  
 
   newGame(); // start the first game on page load
 });
