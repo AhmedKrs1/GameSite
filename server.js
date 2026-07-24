@@ -126,9 +126,13 @@ app.post('/api/games/:gameName/played', async (req, res) => {
 
     const { gameName } = req.params;
     const userId = req.session.userId;
+    const moves = req.body.moves || 0; // defaults to 0 if not sent
+
 
     // Validate game name (layer of security)
-    const validGames = ['tic-tac-toe', 'chess', 'sudoku'];
+    const validGames = ['tic-tac-toe', 'chess', 'sudoku', 'snake', 'memory-match'];
+
+    
 
     if (!validGames.includes(gameName)) {
         return res.status(400).json({ error: 'Invalid game name' });
@@ -139,8 +143,10 @@ app.post('/api/games/:gameName/played', async (req, res) => {
             `INSERT INTO game_stats (user_id, game_name, games_played)
              VALUES ($1, $2, 1)
              ON CONFLICT (user_id, game_name)
-             DO UPDATE SET games_played = game_stats.games_played + 1`,
-            [userId, gameName]
+             DO UPDATE SET 
+                games_played = game_stats.games_played + 1,
+                total_moves = game_stats.total_moves + $3`,
+            [userId, gameName, moves]
         );
 
         res.status(200).json({ message: 'Game recorded' });
@@ -160,9 +166,15 @@ app.get('/api/games/stats', async (req, res) => {
 
     try {
         const result = await pool.query(
-            'SELECT game_name, games_played FROM game_stats WHERE user_id = $1',
+            'SELECT game_name, games_played, total_moves FROM game_stats WHERE user_id = $1',
             [userId]
         );
+        
+        const  stats = result.rows.map(row => ({
+            game_name: row.game_name,
+            games_played: row.games_played,
+            avg_moves: row.total_moves > 0 ? Math.round(row.total_moves / row.games_played).toFixed(2) : 0,
+        }));
 
         res.status(200).json({ stats: result.rows });
     } catch (err) {

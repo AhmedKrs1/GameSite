@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
     scoreDEl.textContent = scores.draws;
   }
   // Record the number of game plays in the database
-  async function recordGamePlay(gameName) {
+  /*async function recordGamePlay(gameName) {
     try {
       const response = await fetch(`/api/games/${gameName}/played`, {
         method: 'POST',
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.error('Error recording game play:', err);
     }
-  } 
+  } */ 
 
   /**
    * Handles a click on a single cell.
@@ -182,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
       statusEl.textContent = "It's a draw!";
       scores.draws += 1;
       renderScores();
+      recordGamePlay('tic-tac-toe'); // Record the game play in the database
       return;
     }
 
@@ -198,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     board = Array(9).fill(null);
     currentPlayer = "X";
     gameOver = false;
-
+   
     cellEls.forEach((cell) => {
       cell.classList.remove("win");
     });
@@ -212,6 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function resetScores() {
     scores = { X: 0, O: 0, draws: 0 };
     renderScores();
+    
     newGame();
   }
    
