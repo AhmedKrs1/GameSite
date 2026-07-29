@@ -160,6 +160,7 @@ main {
   opacity: 0.85;
   transform: translateY(-2px);
 }
+
 #reset-btn:active {
   transform: translateY(0);
   opacity: 1;
