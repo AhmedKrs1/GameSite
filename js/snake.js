@@ -1,7 +1,9 @@
 const canvas = document.getElementById('gameCanvas');
+const scoreEl = document.getElementById('score');
 const ctx = canvas.getContext('2d');
 const gridSize = 20; // each cell is 20x20 pixels
 
+let score = 0; 
 let snake = [
   { x: 5, y: 5 },
   { x: 4, y: 5 },
@@ -34,10 +36,13 @@ function checkSelfCollision(head) {
 }
 function spawnFood() {
     const gridCount = canvas.width / gridSize;
+    const gridCountY = canvas.height / gridSize;
+
     food = {
         x: Math.floor(Math.random() * gridCount),
-        y: Math.floor(Math.random() * gridCount)
+        y: Math.floor(Math.random() * gridCountY)
     };
+    
 }
 
 function move() {
@@ -48,14 +53,18 @@ function move() {
         alert('Game Over!');
         return;
     }
+    
     snake.unshift(newHead);
     if(newHead.x === food.x && newHead.y === food.y) {
+        score++;
+        scoreEl.textContent = score;
         spawnFood();
     } else {
         snake.pop(); // remove the tail
     }
      
 }
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = 'lime';
