@@ -7,6 +7,10 @@ let snake = [
   { x: 4, y: 5 },
   { x: 3, y: 5 }
 ];
+
+let food = { x: 10, y: 10 };
+
+
 ctx.fillStyle = 'lime';
 ctx.fillRect(100, 100, 20, 20);
 
@@ -28,6 +32,13 @@ function checkWallCollision(head) {
 function checkSelfCollision(head) {
     return snake.some(segment => segment.x === head.x && segment.y === head.y);
 }
+function spawnFood() {
+    const gridCount = canvas.width / gridSize;
+    food = {
+        x: Math.floor(Math.random() * gridCount),
+        y: Math.floor(Math.random() * gridCount)
+    };
+}
 
 function move() {
     const head = snake[0];
@@ -38,7 +49,12 @@ function move() {
         return;
     }
     snake.unshift(newHead);
-    snake.pop(); // remove the tail
+    if(newHead.x === food.x && newHead.y === food.y) {
+        spawnFood();
+    } else {
+        snake.pop(); // remove the tail
+    }
+     
 }
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -47,6 +63,9 @@ function draw() {
   for( const segment of snake) {
     ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
   }
+
+  ctx.fillStyle = 'red';
+  ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
 }
 
 function gameLoop() {
@@ -56,6 +75,6 @@ function gameLoop() {
 }
 
 
-
+// execute game loop every 150ms
 setInterval(gameLoop, 150);
 
