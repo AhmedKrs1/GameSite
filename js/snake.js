@@ -2,6 +2,8 @@ const canvas = document.getElementById('gameCanvas');
 const scoreEl = document.getElementById('score');
 const ctx = canvas.getContext('2d');
 const gridSize = 20; // each cell is 20x20 pixels
+const startButton = document.getElementById('startButton');
+const restartButton = document.getElementById('restartButton');
 
 let score = 0; 
 let snake = [
@@ -19,7 +21,32 @@ ctx.fillRect(100, 100, 20, 20);
 let direction = { x: 1, y: 0 }; // moving right
 
 let gameOver = false;
+let gameLoopInterval = null;
 
+document.addEventListener('DOMContentLoaded', () => {
+  startButton.addEventListener('click', () => {
+    if(gameLoopInterval!=null){
+        clearInterval(gameLoopInterval); // Stop the game loop if it's already running
+    }
+    resetGame(); // Reset the game state before starting
+    score = 0;
+    scoreEl.textContent = score;
+    
+    direction = { x: 1, y: 0 };
+    gameOver = false;
+    spawnFood();
+    gameLoopInterval = setInterval(gameLoop, 150); // Start the game loop immediately after clicking start
+  });
+});
+document.addEventListener('DOMContentLoaded', () => {
+  restartButton.addEventListener('click', () => {
+     if (gameLoopInterval != null) clearInterval(gameLoopInterval); gameLoopInterval = null; // Stop the game loop if it's already runnin
+    resetGame();
+    gameOver = true;
+    draw()
+    
+  });
+});
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowUp' && direction.y === 0) direction = { x: 0, y: -1 };
   else if (e.key === 'ArrowDown' && direction.y === 0) direction = { x: 0, y: 1 };
@@ -44,6 +71,20 @@ function spawnFood() {
     };
     
 }
+function resetGame() {
+    score = 0;
+    scoreEl.textContent = score;
+  snake = [
+    { x: 5, y: 5 },
+    { x: 4, y: 5 },
+    { x: 3, y: 5 }
+  ];
+    direction = { x: 1, y: 0 };
+    gameOver = true;
+   
+   spawnFood();
+  
+} 
 
 function move() {
     const head = snake[0];
@@ -51,6 +92,8 @@ function move() {
     if (checkWallCollision(newHead) || checkSelfCollision(newHead)) {
         gameOver = true;
         alert('Game Over!');
+        resetGame();
+        clearInterval(gameLoopInterval); // Stop the game loops
         return;
     }
     
@@ -83,7 +126,4 @@ function gameLoop() {
   draw();
 }
 
-
-// execute game loop every 150ms
-setInterval(gameLoop, 150);
 

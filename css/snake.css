@@ -4,3 +4,34 @@
   display: block;
   margin: 0 auto;
 }
+
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #555;
+  color: white;
+}
+button:active {
+  background-color: #333;
+  color: white;
+}
+.resetButton {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.resetButton:hover {
+  background-color: #555;
+  color: white;
+}
+.resetButton:active {   
+  background-color: #333;
+  color: white;
+} 
