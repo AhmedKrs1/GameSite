@@ -13,7 +13,7 @@ let snake = [
 ];
 
 let food = { x: 10, y: 10 };
-
+let gamespeed = 150; // Inital speed of the snake
 
 ctx.fillStyle = 'lime';
 ctx.fillRect(100, 100, 20, 20);
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
      if (gameLoopInterval != null) clearInterval(gameLoopInterval); gameLoopInterval = null; // Stop the game loop if it's already runnin
     resetGame();
     gameOver = true;
-    draw()
+    draw(); // Draw the initial state of the game after resetting
     
   });
 });
@@ -102,6 +102,11 @@ function move() {
         score++;
         scoreEl.textContent = score;
         spawnFood();
+        // Increase speed of the snake as it eats food, but not below a certain threshold
+        gamespeed = Math.max(gamespeed -7, 50)
+        clearInterval(gameLoopInterval)
+        gameLoopInterval = setInterval(gameLoop, gamespeed)
+
     } else {
         snake.pop(); // remove the tail
     }
