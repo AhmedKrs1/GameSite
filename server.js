@@ -138,17 +138,30 @@ app.post('/api/games/:gameName/played', async (req, res) => {
   }
 
   try {
+    const newRecordValue = gameName === 'memory-match' ? moves : score;
+    
     const query = `
-      INSERT INTO game_stats (user_id, game_name, games_played, total_moves, max_score)
-      VALUES ($1, $2, 1, $3, $4)
-      ON CONFLICT (user_id, game_name) DO UPDATE SET
-        games_played = game_stats.games_played + 1,
-        total_moves  = game_stats.total_moves + EXCLUDED.total_moves,
-        max_score    = GREATEST(game_stats.max_score, EXCLUDED.max_score)
-      RETURNING *;
-    `;
+    
+        INSERT INTO game_stats (user_id, game_name, games_played, total_moves, max_score)
+        VALUES ($1, $2, 1, $3, $4)
+        ON CONFLICT (user_id, game_name) DO UPDATE SET
+            games_played = game_stats.games_played + 1,
+            total_moves  = game_stats.total_moves + EXCLUDED.total_moves,
+            max_score    = CASE 
+            -- For memory-match: pick the lower non-zero move count
+            WHEN EXCLUDED.game_name = 'memory-match' THEN 
+                CASE 
+                WHEN game_stats.max_score = 0 THEN EXCLUDED.max_score
+                WHEN EXCLUDED.max_score = 0 THEN game_stats.max_score
+                ELSE LEAST(game_stats.max_score, EXCLUDED.max_score)
+                END
+            -- For games like snake: pick the highest score
+            ELSE GREATEST(game_stats.max_score, EXCLUDED.max_score)
+            END
+        RETURNING *;
+    ` ;
 
-    const values = [userId, gameName, moves, score];
+    const values = [userId, gameName, moves, newRecordValue];
     
     // Replace 'pool' with 'db' if that is what you named your import
     const result = await pool.query(query, values);
@@ -165,7 +178,7 @@ app.post('/api/games/:gameName/played', async (req, res) => {
 
 // Get game stats for the logged-in user
 app.get('/api/games/stats', async (req, res) => {
-    if (!req.session.userId) {
+   if (!req.session.userId) {
         return res.status(401).json({ error: 'Not logged in' });
     }
 
@@ -173,19 +186,13 @@ app.get('/api/games/stats', async (req, res) => {
 
     try {
         const result = await pool.query(
-            'SELECT game_name, games_played, total_moves FROM game_stats WHERE user_id = $1',
+            'SELECT game_name, games_played, total_moves, max_score FROM game_stats WHERE user_id = $1',
             [userId]
         );
-        
-        const  stats = result.rows.map(row => ({
-            game_name: row.game_name,
-            games_played: row.games_played,
-            avg_moves: row.total_moves > 0 ? Math.round(row.total_moves / row.games_played).toFixed(2) : 0,
-        }));
 
         res.status(200).json({ stats: result.rows });
     } catch (err) {
-        console.error(err);
+        console.error('Stats query error:', err);
         res.status(500).json({ error: 'Something went wrong' });
     }
 });
