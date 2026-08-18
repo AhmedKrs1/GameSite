@@ -121,39 +121,46 @@ app.post('/api/logout', (req, res) => {
 // Record a game play
 app.post('/api/games/:gameName/played', async (req, res) => {
     if (!req.session.userId) {
-        return res.status(401).json({ error: 'Not logged in' });
-    }
+    return res.status(401).json({ error: 'Not logged in' });
+  }
 
-    const { gameName } = req.params;
-    const userId = req.session.userId;
-    const moves = req.body.moves || 0; // defaults to 0 if not sent
+  const { gameName } = req.params;
+  const userId = req.session.userId;
+  
+  // 1. Extract both moves and score safely from req.body
+  const moves = parseInt(req.body.moves, 10) || 0;
+  const score = parseInt(req.body.score, 10) || 0;
 
+  // Validate game name
+  const validGames = ['tic-tac-toe', 'chess', 'sudoku', 'snake', 'memory-match'];
+  if (!validGames.includes(gameName)) {
+    return res.status(400).json({ error: 'Invalid game name' });
+  }
 
-    // Validate game name (layer of security)
-    const validGames = ['tic-tac-toe', 'chess', 'sudoku', 'snake', 'memory-match'];
+  try {
+    const query = `
+      INSERT INTO game_stats (user_id, game_name, games_played, total_moves, max_score)
+      VALUES ($1, $2, 1, $3, $4)
+      ON CONFLICT (user_id, game_name) DO UPDATE SET
+        games_played = game_stats.games_played + 1,
+        total_moves  = game_stats.total_moves + EXCLUDED.total_moves,
+        max_score    = GREATEST(game_stats.max_score, EXCLUDED.max_score)
+      RETURNING *;
+    `;
 
+    const values = [userId, gameName, moves, score];
     
+    // Replace 'pool' with 'db' if that is what you named your import
+    const result = await pool.query(query, values);
 
-    if (!validGames.includes(gameName)) {
-        return res.status(400).json({ error: 'Invalid game name' });
-    }
-
-    try {
-        await pool.query(
-            `INSERT INTO game_stats (user_id, game_name, games_played)
-             VALUES ($1, $2, 1)
-             ON CONFLICT (user_id, game_name)
-             DO UPDATE SET 
-                games_played = game_stats.games_played + 1,
-                total_moves = game_stats.total_moves + $3`,
-            [userId, gameName, moves]
-        );
-
-        res.status(200).json({ message: 'Game recorded' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Something went wrong' });
-    }
+    return res.status(200).json({
+      message: 'Game stats updated successfully',
+      stats: result.rows[0]
+    });
+  } catch (err) {
+    console.error('Database error in recordGamePlay:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 // Get game stats for the logged-in user
@@ -182,6 +189,20 @@ app.get('/api/games/stats', async (req, res) => {
         res.status(500).json({ error: 'Something went wrong' });
     }
 });
+
+// Express GET endpoint
+app.get('/api/games/:gameName/stats', async (req, res) => {
+  const userId = req.user?.id || req.session?.userId;
+  const { gameName } = req.params;
+
+  const result = await pool.query(
+    'SELECT * FROM game_stats WHERE user_id = $1 AND game_name = $2',
+    [userId, gameName]
+  );
+
+  res.json({ stats: result.rows[0] || { max_score: 0, games_played: 0 } });
+});
+
 
 // Serve static files for the frontend
 app.use(express.static('public'));

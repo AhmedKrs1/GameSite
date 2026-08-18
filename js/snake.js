@@ -20,7 +20,7 @@ let direction = { x: 1, y: 0 }; // moving right
 let gameOver = false;
 let gameLoopInterval = null;
 
-// these match the --teal / --coral / --bg tokens in theme.css, so the canvas
+
 // stays in sync with the page's color palette
 const SNAKE_HEAD_COLOR = '#00C2A8';    // --teal
 const SNAKE_BODY_COLOR_A = '#0aa08c';  // slightly darker teal
@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (gameLoopInterval != null) {
       clearInterval(gameLoopInterval); // stop the game loop if it's already running
     }
+    
     resetGame(); // resets score, snake, direction, speed, and spawns food
     gameOver = false;
     gameLoopInterval = setInterval(gameLoop, gamespeed);
@@ -95,7 +96,12 @@ function move() {
   if (checkWallCollision(newHead) || checkSelfCollision(newHead)) {
     gameOver = true;
     clearInterval(gameLoopInterval); // stop the loop before the blocking alert
-    alert('Game Over!');
+
+    const finalScore = score;
+
+    recordGamePlay('snake', 0, finalScore); // record the game play with both moves and score
+    alert(`Game Over!, score: ${finalScore}`);
+    
     resetGame();
     draw();
     return;
