@@ -31,7 +31,8 @@ function getSpecificMetric(stat) {
     return `<span class="stat-badge high-score">Highest Score: <strong>${stat.max_score || 0}</strong></span>`;
   }
   if (stat.game_name === 'memory-match') {
-    return `<span class="stat-badge moves">Least Total Moves: <strong>${stat.total_moves || 0}</strong></span>`;
+    const bestMoves = stat.max_score || stat.total_moves || 0;
+    return `<span class="stat-badge high-score">Best: <strong>${bestMoves} moves</strong></span>`;
   }
   if (stat.total_moves > 0) {
     return `<span class="stat-badge moves">Least Total Moves: <strong>${stat.total_moves}</strong></span>`;
