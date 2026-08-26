@@ -51,7 +51,7 @@ app.post('/api/signup', async (req, res) => {
         res.status(201).json({ message: 'User created successfully' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error!' });
     }   
 
     
